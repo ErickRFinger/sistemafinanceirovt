@@ -8,8 +8,10 @@ export default function LeitorNotas() {
   const [preview, setPreview] = useState(null)
   const [resultado, setResultado] = useState(null)
   const [progresso, setProgresso] = useState(0)
-  const [mensagem, setMensagem] = useState({ type: '', text: '' })
-  const fileInputRef = useRef(null)
+  const [erro, setErro] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
+  const cameraInputRef = useRef(null)
+  const galleryInputRef = useRef(null)
   const navigate = useNavigate()
 
   const handleFileSelect = (e) => {
@@ -27,6 +29,8 @@ export default function LeitorNotas() {
         return
       }
 
+      setSelectedFile(file)
+
       // Criar preview
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -39,8 +43,7 @@ export default function LeitorNotas() {
   }
 
   const processarImagem = async (criarTransacao = true) => {
-    const file = fileInputRef.current?.files[0]
-    if (!file) {
+    if (!selectedFile) {
       setMensagem({ type: 'error', text: 'Por favor, selecione uma imagem primeiro' })
       return
     }
@@ -51,7 +54,7 @@ export default function LeitorNotas() {
 
     try {
       const formData = new FormData()
-      formData.append('imagem', file)
+      formData.append('imagem', selectedFile)
 
       // Simular progresso (OCR pode demorar)
       const progressInterval = setInterval(() => {
@@ -80,32 +83,32 @@ export default function LeitorNotas() {
 
       if (response.data.success) {
         setResultado(response.data.resultado)
-        
+
         if (response.data.transacao) {
-          setMensagem({ 
-            type: 'success', 
-            text: response.data.mensagem || 'Transação criada com sucesso!' 
+          setMensagem({
+            type: 'success',
+            text: response.data.mensagem || 'Transação criada com sucesso!'
           })
-          
+
           // Disparar evento para atualizar dashboard
           window.dispatchEvent(new CustomEvent('transacaoCriada'))
-          
+
           // Redirecionar para transações após 2 segundos
           setTimeout(() => {
             navigate('/transacoes')
           }, 2000)
         } else {
-          setMensagem({ 
-            type: 'warning', 
-            text: response.data.mensagem || 'Imagem processada. Revise os dados antes de criar a transação.' 
+          setMensagem({
+            type: 'warning',
+            text: response.data.mensagem || 'Imagem processada. Revise os dados antes de criar a transação.'
           })
         }
       }
     } catch (error) {
       console.error('Erro ao processar:', error)
-      setMensagem({ 
-        type: 'error', 
-        text: error.response?.data?.error || 'Erro ao processar imagem. Tente novamente.' 
+      setMensagem({
+        type: 'error',
+        text: error.response?.data?.error || 'Erro ao processar imagem. Tente novamente.'
       })
     } finally {
       setLoading(false)
@@ -129,17 +132,17 @@ export default function LeitorNotas() {
       })
 
       setMensagem({ type: 'success', text: 'Transação criada com sucesso!' })
-      
+
       // Disparar evento para atualizar dashboard
       window.dispatchEvent(new CustomEvent('transacaoCriada'))
-      
+
       setTimeout(() => {
         navigate('/transacoes')
       }, 1500)
     } catch (error) {
-      setMensagem({ 
-        type: 'error', 
-        text: error.response?.data?.error || 'Erro ao criar transação' 
+      setMensagem({
+        type: 'error',
+        text: error.response?.data?.error || 'Erro ao criar transação'
       })
     } finally {
       setLoading(false)
@@ -179,42 +182,84 @@ export default function LeitorNotas() {
           </p>
 
           <div className="upload-area">
+            {/* Input para Câmera (Mobile First) */}
             <input
               type="file"
-              ref={fileInputRef}
+              ref={cameraInputRef}
+              onChange={handleFileSelect}
+              accept="image/*"
+              capture="environment"
+              className="file-input"
+              id="camera-input"
+            />
+
+            {/* Input para Galeria */}
+            <input
+              type="file"
+              ref={galleryInputRef}
               onChange={handleFileSelect}
               accept="image/*"
               className="file-input"
-              id="file-input"
+              id="gallery-input"
             />
-            <label htmlFor="file-input" className="upload-label">
-              {preview ? (
+
+            <div className="upload-placeholder">
+              {!preview ? (
+                <>
+                  <div className="upload-icon">📸</div>
+                  <p>Adicione um comprovante</p>
+
+                  <div className="upload-buttons-container">
+                    <button
+                      type="button"
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="btn-upload-option camera"
+                    >
+                      <span>📷</span>
+                      Tirar Foto
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => galleryInputRef.current?.click()}
+                      className="btn-upload-option gallery"
+                    >
+                      <span>🖼️</span>
+                      Galeria
+                    </button>
+                  </div>
+
+                  <span className="upload-hint">Formatos: JPG, PNG, GIF (máx. 10MB)</span>
+                </>
+              ) : (
                 <div className="preview-container">
                   <img src={preview} alt="Preview" className="preview-image" />
-                  <span className="preview-text">Clique para trocar a imagem</span>
-                </div>
-              ) : (
-                <div className="upload-placeholder">
-                  <div className="upload-icon">📷</div>
-                  <p>Clique para selecionar ou arraste uma imagem</p>
-                  <span className="upload-hint">Formatos: JPG, PNG, GIF (máx. 10MB)</span>
+                  <div className="preview-actions">
+                    <button
+                      type="button"
+                      onClick={() => setPreview(null)}
+                      className="btn-remove-preview"
+                    >
+                      ❌ Remover
+                    </button>
+                  </div>
                 </div>
               )}
-            </label>
+            </div>
           </div>
 
           {loading && (
             <div className="progress-container">
               <div className="progress-bar">
-                <div 
-                  className="progress-fill" 
+                <div
+                  className="progress-fill"
                   style={{ width: `${progresso}%` }}
                 />
               </div>
               <p className="progress-text">
-                {progresso < 50 ? 'Enviando imagem...' : 
-                 progresso < 90 ? 'Processando texto...' : 
-                 'Finalizando...'}
+                {progresso < 50 ? 'Enviando imagem...' :
+                  progresso < 90 ? 'Processando texto...' :
+                    'Finalizando...'}
               </p>
             </div>
           )}
@@ -240,7 +285,7 @@ export default function LeitorNotas() {
         {/* Resultado */}
         <div className="card">
           <h3>📋 Resultado do Processamento</h3>
-          
+
           {!resultado ? (
             <div className="empty-result">
               <div className="empty-icon">🔍</div>
@@ -276,8 +321,8 @@ export default function LeitorNotas() {
                 <label>Confiança</label>
                 <div className="resultado-confianca">
                   <div className="confianca-bar">
-                    <div 
-                      className="confianca-fill" 
+                    <div
+                      className="confianca-fill"
                       style={{ width: `${resultado.confianca * 100}%` }}
                     />
                   </div>
