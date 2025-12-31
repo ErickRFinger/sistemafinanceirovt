@@ -106,9 +106,12 @@ export default function LeitorNotas() {
       }
     } catch (error) {
       console.error('Erro ao processar:', error)
+      const errorMsg = error.response?.data?.error || 'Erro ao processar imagem'
+      const errorDetails = error.response?.data?.detalhes
+
       setMensagem({
         type: 'error',
-        text: error.response?.data?.error || 'Erro ao processar imagem. Tente novamente.'
+        text: errorDetails ? `${errorMsg}: ${errorDetails}` : `${errorMsg}. Tente novamente.`
       })
     } finally {
       setLoading(false)

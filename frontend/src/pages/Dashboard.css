@@ -466,31 +466,38 @@
     justify-content: space-between !important;
     flex-wrap: nowrap !important;
     gap: 0.5rem !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    /* Menos margem */
     background: var(--bg-secondary);
-    padding: 0.5rem 0.75rem !important;
+    padding: 0.5rem !important;
+    /* Menos padding */
     border-radius: 0.5rem;
     border: 1px solid var(--border);
     width: 100%;
+    margin-top: -0.5rem;
+    /* Puxar um pouco pra cima */
   }
 
   /* Container do Título */
   .dashboard-header-container>div:first-child {
     flex: 1;
     min-width: 0;
-    /* Crítico para flexbox funcionar com text-overflow */
     margin-right: 0.5rem;
+    display: flex;
+    /* Flex para alinhar itens */
+    align-items: center;
   }
 
   .dashboard-header-container h2 {
-    font-size: 1rem !important;
-    /* Fonte bem menor */
+    font-size: 0.9rem !important;
+    /* Fonte menor */
     margin: 0 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left !important;
-    line-height: 1.2;
+    line-height: 1;
+    font-weight: 600;
   }
 
   /* Ocultar subtítulo para economizar espaço vertical */
@@ -506,30 +513,70 @@
   }
 
   .mes-selector input {
-    width: 110px !important;
-    /* Largura fixa pequena */
-    height: 32px !important;
-    /* Altura reduzida */
+    width: 95px !important;
+    /* Ainda menor */
+    height: 28px !important;
+    /* Mais baixo */
     padding: 0 0.25rem !important;
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
     margin: 0 !important;
+    border-radius: 4px;
   }
 
   /* CARDS COMPACTOS */
-  .resumo-card {
-    padding: 1rem !important;
-    gap: 0.75rem !important;
+  .resumo-card,
+  .total-guardado-card {
+    padding: 0.875rem !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .total-guardado-card {
+    flex-direction: row !important;
+    /* Manter linha */
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .total-guardado-card h3 {
+    font-size: 0.7rem !important;
+  }
+
+  .total-guardado-subtitle {
+    display: none !important;
+    /* Ocultar subtítulo */
+  }
+
+  .total-guardado-icon {
+    font-size: 1.25rem !important;
+    padding: 0.4rem !important;
+    margin-right: 0.5rem;
+  }
+
+  .total-guardado-valor {
+    font-size: 1.25rem !important;
+    /* Menor */
+    align-self: center !important;
   }
 
   .resumo-icon {
-    font-size: 1.5rem !important;
-    /* Ícone menor */
+    font-size: 1.25rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .resumo-content h3 {
+    font-size: 0.75rem !important;
     margin-bottom: 0 !important;
   }
 
   .resumo-valor {
-    font-size: 1.5rem !important;
-    margin: 0.25rem 0 !important;
+    font-size: 1.1rem !important;
+    margin: 0.1rem 0 !important;
+    font-weight: 700;
+  }
+
+  .resumo-subtitle {
+    font-size: 0.65rem !important;
   }
 
   /* LISTAS E GRIDS */
@@ -538,28 +585,23 @@
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr !important;
-    /* Forçar uma coluna */
-    gap: 1rem !important;
+    gap: 0.75rem !important;
   }
 
   .transacao-item {
-    padding: 0.75rem !important;
+    padding: 0.6rem !important;
   }
 
   .transacao-valor {
-    font-size: 1.1rem !important;
-    padding: 0.25rem 0.5rem !important;
+    font-size: 1rem !important;
+    padding: 0.2rem 0.4rem !important;
   }
 }
 
 @media (max-width: 380px) {
 
-  /* Ajustes para telas MUITO pequenas (iPhone SE etc) */
-  .dashboard-header h2 {
-    font-size: 1.25rem;
-  }
-
-  .resumo-valor {
-    font-size: 1.5rem;
+  /* Ajustes iPhone SE */
+  .dashboard-header-container h2 {
+    font-size: 0.8rem !important;
   }
 }
