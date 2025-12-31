@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import supabase from './database/db.js';
 import authRoutes from './routes/auth.js';
+import passwordRoutes from './routes/password.js';
 import transacoesRoutes from './routes/transacoes.js';
 import categoriasRoutes from './routes/categorias.js';
 import perfilRoutes from './routes/perfil.js';
@@ -107,6 +108,7 @@ console.log('📝 Registrando rotas da API...');
 
 // Rotas de autenticação (não precisam de token)
 app.use('/api/auth', authRoutes);
+app.use('/api/password', passwordRoutes);
 
 // Rotas que precisam de autenticação
 app.use('/api/transacoes', transacoesRoutes);

@@ -45,8 +45,15 @@ router.post('/forgot-password', asyncHandler(async (req, res) => {
         return res.status(500).json({ error: 'Erro ao processar solicitação' });
     }
 
-    // Link de recuperação (ajustar URL do frontend)
-    const resetLink = `http://${req.headers.host.replace('3001', '3000')}/reset-password?token=${token}`;
+    // Link de recuperação
+    const frontendUrl = process.env.FRONTEND_URL || req.headers.host.replace('3001', '3000');
+    // Garantir protocolo https em produção
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+
+    // Se FRONTEND_URL não tiver protocolo, adicionar
+    const baseUrl = frontendUrl.startsWith('http') ? frontendUrl : `${protocol}://${frontendUrl}`;
+
+    const resetLink = `${baseUrl}/reset-password?token=${token}`;
 
     // Enviar email
     const html = `

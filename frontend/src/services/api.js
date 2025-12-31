@@ -8,6 +8,18 @@ const api = axios.create({
   timeout: 10000 // 10 segundos
 })
 
+// Garantir que a URL termine com /api se for uma URL completa (produção)
+// Isso evita erros se o usuário esquecer de colocar /api na variável de ambiente
+if (api.defaults.baseURL.startsWith('http')) {
+  let url = api.defaults.baseURL;
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
+  }
+  if (!url.endsWith('/api')) {
+    api.defaults.baseURL = `${url}/api`;
+  }
+}
+
 // Função auxiliar para extrair mensagem de erro de forma segura
 function extractErrorMessage(data, defaultMessage = 'Erro desconhecido') {
   if (!data) return defaultMessage
