@@ -396,130 +396,98 @@
 }
 
 @media (max-width: 768px) {
+
+  /* HEADER SUPER COMPACTO */
   .dashboard-header {
-    flex-direction: row;
-    /* Manter em linha para economizar altura */
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    /* Não quebrar linha */
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1rem !important;
     background: var(--bg-secondary);
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem !important;
     border-radius: 0.5rem;
     border: 1px solid var(--border);
-    margin-left: -1rem;
-    /* Expandir para bordas se necessário, ou manter contido */
-    margin-right: -1rem;
-    width: auto;
+    width: 100%;
   }
 
-  /* Ajustar o container de texto */
+  /* Container do Título */
   .dashboard-header>div:first-child {
-    min-width: 0;
-    /* Permitir encolhimento do texto */
     flex: 1;
-    display: flex;
-    align-items: center;
+    min-width: 0;
+    /* Crítico para flexbox funcionar com text-overflow */
+    margin-right: 0.5rem;
   }
 
   .dashboard-header h2 {
-    font-size: 1.1rem;
-    /* Bem compacto */
-    margin: 0;
+    font-size: 1rem !important;
+    /* Fonte bem menor */
+    margin: 0 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: left;
+    text-align: left !important;
+    line-height: 1.2;
   }
 
+  /* Ocultar subtítulo para economizar espaço vertical */
   .dashboard-subtitle {
-    display: none;
-    /* Ocultar subtítulo no mobile */
+    display: none !important;
   }
 
+  /* Container do Seletor de Mês */
   .mes-selector {
-    width: auto;
+    width: auto !important;
     flex-shrink: 0;
-    /* Não encolher o seletor */
-    margin: 0;
+    margin: 0 !important;
   }
 
   .mes-selector input {
-    width: auto;
-    max-width: 130px;
-    /* Tamanho fixo menor */
-    margin: 0;
-    height: 36px;
-    padding: 0 0.5rem;
-    font-size: 0.85rem;
+    width: 110px !important;
+    /* Largura fixa pequena */
+    height: 32px !important;
+    /* Altura reduzida */
+    padding: 0 0.25rem !important;
+    font-size: 0.8rem !important;
+    margin: 0 !important;
   }
 
-  /* Mais fácil de tocar */
-}
+  /* CARDS COMPACTOS */
+  .resumo-card {
+    padding: 1rem !important;
+    gap: 0.75rem !important;
+  }
 
-/* Cards mais compactos no mobile */
-.resumo-card {
-  padding: 1.25rem;
-  flex-direction: column;
-  /* Icone em cima, valor embaixo */
-  text-align: center;
-  gap: 0.5rem;
-}
+  .resumo-icon {
+    font-size: 1.5rem !important;
+    /* Ícone menor */
+    margin-bottom: 0 !important;
+  }
 
-.resumo-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
+  .resumo-valor {
+    font-size: 1.5rem !important;
+    margin: 0.25rem 0 !important;
+  }
 
-.resumo-valor {
-  font-size: 1.75rem;
-}
+  /* LISTAS E GRIDS */
+  .stats-grid,
+  .quick-actions,
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr !important;
+    /* Forçar uma coluna */
+    gap: 1rem !important;
+  }
 
-/* Grid de estatísticas vira lista */
-.stats-grid {
-  grid-template-columns: 1fr;
-  /* Uma coluna */
-  gap: 1rem;
-}
+  .transacao-item {
+    padding: 0.75rem !important;
+  }
 
-/* Botões de ação rápida maiores para toque */
-.quick-actions {
-  grid-template-columns: 1fr;
-  /* Uma coluna pra ficar botão grande */
-  gap: 0.75rem;
-}
-
-.quick-action-btn {
-  padding: 1rem;
-  justify-content: center;
-  /* Centralizar conteudo */
-}
-
-/* Transações: manter info compacta */
-.transacao-item {
-  flex-direction: column;
-  align-items: stretch;
-  padding: 1rem;
-  gap: 0.75rem;
-}
-
-.transacao-info {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.transacao-valor {
-  text-align: center;
-  /* Valor centralizado */
-  background: rgba(0, 0, 0, 0.03);
-  /* Fundo leve pra destacar */
-  padding: 0.75rem;
-  width: 100%;
-  box-sizing: border-box;
-}
+  .transacao-valor {
+    font-size: 1.1rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
 }
 
 @media (max-width: 380px) {
