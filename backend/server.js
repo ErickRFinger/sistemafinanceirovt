@@ -11,6 +11,7 @@ import ocrRoutes from './routes/ocr.js';
 import metasRoutes from './routes/metas.js';
 import bancosRoutes from './routes/bancos.js';
 import gastosRecorrentesRoutes from './routes/gastos-recorrentes.js';
+import investimentosRoutes from './routes/investimentos.js';
 
 dotenv.config();
 
@@ -130,6 +131,7 @@ app.use('/api/bancos', (req, res, next) => {
 }, bancosRoutes);
 
 app.use('/api/gastos-recorrentes', gastosRecorrentesRoutes);
+app.use('/api/investimentos', investimentosRoutes);
 
 console.log('✅ Todas as rotas registradas');
 console.log('   ✓ /api/auth');
@@ -140,6 +142,7 @@ console.log('   ✓ /api/ocr');
 console.log('   ✓ /api/metas');
 console.log('   ✓ /api/bancos');
 console.log('   ✓ /api/gastos-recorrentes');
+console.log('   ✓ /api/investimentos');
 
 // Rota não encontrada (404) - DEVE SER A ÚLTIMA ANTES DO TRATAMENTO DE ERROS
 app.use((req, res, next) => {
