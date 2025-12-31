@@ -1,4 +1,4 @@
-.dashboard-header {
+.dashboard-header-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -7,7 +7,7 @@
   gap: 1rem;
 }
 
-.dashboard-header h2 {
+.dashboard-header-container h2 {
   font-size: 2.5rem;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -398,7 +398,7 @@
 @media (max-width: 768px) {
 
   /* HEADER SUPER COMPACTO */
-  .dashboard-header {
+  .dashboard-header-container {
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -413,14 +413,14 @@
   }
 
   /* Container do Título */
-  .dashboard-header>div:first-child {
+  .dashboard-header-container>div:first-child {
     flex: 1;
     min-width: 0;
     /* Crítico para flexbox funcionar com text-overflow */
     margin-right: 0.5rem;
   }
 
-  .dashboard-header h2 {
+  .dashboard-header-container h2 {
     font-size: 1rem !important;
     /* Fonte bem menor */
     margin: 0 !important;

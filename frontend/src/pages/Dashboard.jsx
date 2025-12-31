@@ -5,10 +5,10 @@ import { format } from 'date-fns'
 import './Dashboard.css'
 
 export default function Dashboard() {
-  const [resumo, setResumo] = useState({ 
-    receitas: 0, 
-    despesas: 0, 
-    saldo: 0 
+  const [resumo, setResumo] = useState({
+    receitas: 0,
+    despesas: 0,
+    saldo: 0
   })
   const [transacoes, setTransacoes] = useState([])
   const [perfil, setPerfil] = useState({ ganho_fixo_mensal: 0 })
@@ -25,12 +25,12 @@ export default function Dashboard() {
       setLoading(true)
       setError(null)
       console.log('🔄 Carregando dados do dashboard...', mesAno)
-      
+
       // Carregar cada requisição individualmente para melhor tratamento de erros
       let resumoData = { receitas: 0, despesas: 0, saldo: 0 }
       let transacoesData = []
       let perfilData = { ganho_fixo_mensal: 0 }
-      
+
       // Carregar resumo
       try {
         const resumoRes = await api.get('/transacoes/resumo/saldo', { params: mesAno })
@@ -40,7 +40,7 @@ export default function Dashboard() {
         console.error('❌ Erro ao carregar resumo:', error)
         setError('Erro ao carregar resumo financeiro')
       }
-      
+
       // Carregar transações
       try {
         const transacoesRes = await api.get('/transacoes', { params: { ...mesAno } })
@@ -52,7 +52,7 @@ export default function Dashboard() {
           setError(prev => prev ? prev + ' | Erro ao carregar transações' : 'Erro ao carregar transações')
         }
       }
-      
+
       // Carregar perfil
       try {
         const perfilRes = await api.get('/perfil')
@@ -66,37 +66,37 @@ export default function Dashboard() {
           throw error
         }
       }
-      
+
       // Garantir que resumo sempre tenha valores numéricos
       const resumoFormatado = {
         receitas: Number(resumoData.receitas) || 0,
         despesas: Number(resumoData.despesas) || 0,
         saldo: Number(resumoData.saldo) || 0
       }
-      
+
       // Limitar transações a 10
       const transacoesLimitadas = transacoesData.slice(0, 10)
-      
+
       console.log('✅ Dados processados:', {
         resumo: resumoFormatado,
         transacoes: transacoesLimitadas.length,
         perfil: perfilData
       })
-      
+
       setResumo(resumoFormatado)
       setTransacoes(transacoesLimitadas)
       setPerfil(perfilData)
-      
+
     } catch (error) {
       console.error('❌ Erro crítico ao carregar dados:', error)
-      
+
       // Se for erro de autenticação, não mostrar erro genérico
       if (error.response?.status === 401) {
         console.log('🔐 Token inválido, redirecionando para login...')
         // O interceptor já vai redirecionar
         return
       }
-      
+
       const errorMessage = error.response?.data?.error || error.message || 'Erro ao carregar dados'
       setError(errorMessage)
       setResumo({ receitas: 0, despesas: 0, saldo: 0 })
@@ -120,7 +120,7 @@ export default function Dashboard() {
     }
 
     window.addEventListener('transacaoCriada', handleTransacaoCriada)
-    
+
     return () => {
       window.removeEventListener('transacaoCriada', handleTransacaoCriada)
     }
@@ -161,9 +161,9 @@ export default function Dashboard() {
     const diaAtual = hoje.getDate()
     const diasRestantes = diasNoMes - diaAtual
     const despesas = Number(resumo.despesas) || 0
-    
+
     if (diaAtual === 0) return despesas
-    
+
     const mediaDiaria = despesas / diaAtual
     const projecao = despesas + (mediaDiaria * diasRestantes)
     return projecao
@@ -186,7 +186,7 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <div className="dashboard-header">
+      <div className="dashboard-header-container">
         <div>
           <h2>📊 Dashboard Financeiro</h2>
           <p className="dashboard-subtitle">Visão geral das suas finanças</p>
@@ -371,9 +371,9 @@ export default function Dashboard() {
             {transacoes.map((transacao) => (
               <div key={transacao.id} className="transacao-item">
                 <div className="transacao-info">
-                  <div 
-                    className="transacao-categoria" 
-                    style={{ 
+                  <div
+                    className="transacao-categoria"
+                    style={{
                       backgroundColor: transacao.categoria_cor || '#6366f1',
                       boxShadow: `0 0 10px ${transacao.categoria_cor || '#6366f1'}40`
                     }}

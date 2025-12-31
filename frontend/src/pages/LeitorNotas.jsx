@@ -8,7 +8,7 @@ export default function LeitorNotas() {
   const [preview, setPreview] = useState(null)
   const [resultado, setResultado] = useState(null)
   const [progresso, setProgresso] = useState(0)
-  const [erro, setErro] = useState('')
+  const [mensagem, setMensagem] = useState({ type: '', text: '' })
   const [selectedFile, setSelectedFile] = useState(null)
   const cameraInputRef = useRef(null)
   const galleryInputRef = useRef(null)
