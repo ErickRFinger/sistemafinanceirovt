@@ -24,7 +24,14 @@ export async function processReceiptWithGemini(imagePath) {
         console.log('   Imagem:', imagePath);
 
         if (!process.env.GEMINI_API_KEY) {
-            throw new Error('GEMINI_API_KEY não configurada no .env');
+            console.error('❌ FATAL: GEMINI_API_KEY não encontrada no process.env');
+            throw new Error('CONFIGURAÇÃO: Chave GEMINI_API_KEY faltando no servidor.');
+        }
+
+        // Verificar se arquivo existe
+        if (!fs.existsSync(imagePath)) {
+            console.error(`❌ Erro: Arquivo não encontrado no caminho: ${imagePath}`);
+            throw new Error('Arquivo de imagem se perdeu no upload (fs.existsSync falhou).');
         }
 
         // Determinar mimetype com base na extensão
