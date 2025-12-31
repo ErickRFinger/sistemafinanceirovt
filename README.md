@@ -169,4 +169,3 @@ ISC
 ---
 
 **Desenvolvido com ❤️ para controle financeiro pessoal**
-.

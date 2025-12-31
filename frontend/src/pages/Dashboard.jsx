@@ -11,6 +11,7 @@ export default function Dashboard() {
     saldo: 0
   })
   const [transacoes, setTransacoes] = useState([])
+  const [totalGuardado, setTotalGuardado] = useState(0)
   const [perfil, setPerfil] = useState({ ganho_fixo_mensal: 0 })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -87,6 +88,16 @@ export default function Dashboard() {
       setTransacoes(transacoesLimitadas)
       setPerfil(perfilData)
 
+      // Carregar bancos para calcular total guardado
+      try {
+        const bancosRes = await api.get('/bancos')
+        const moveisBancos = bancosRes.data || []
+        const total = moveisBancos.reduce((acc, banco) => acc + (Number(banco.saldo_atual) || 0), 0)
+        setTotalGuardado(total)
+      } catch (error) {
+        console.error('❌ Erro ao carregar bancos:', error)
+      }
+
     } catch (error) {
       console.error('❌ Erro crítico ao carregar dados:', error)
 
@@ -101,6 +112,7 @@ export default function Dashboard() {
       setError(errorMessage)
       setResumo({ receitas: 0, despesas: 0, saldo: 0 })
       setTransacoes([])
+      setTotalGuardado(0)
     } finally {
       setLoading(false)
     }
@@ -214,6 +226,18 @@ export default function Dashboard() {
           </button>
         </div>
       )}
+
+      {/* Total Guardado (Patrimônio) */}
+      <div className="card total-guardado-card">
+        <div className="total-guardado-header">
+          <div className="total-guardado-icon">🏦</div>
+          <div>
+            <h3>TOTAL GUARDADO</h3>
+            <p className="total-guardado-subtitle">Soma de todos os seus bancos</p>
+          </div>
+        </div>
+        <p className="total-guardado-valor">{formatarMoeda(totalGuardado)}</p>
+      </div>
 
       {/* Ganho Fixo */}
       {perfil.ganho_fixo_mensal > 0 && (

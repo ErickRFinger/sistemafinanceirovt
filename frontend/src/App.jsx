@@ -9,10 +9,11 @@ import Dashboard from './pages/Dashboard'
 import Transacoes from './pages/Transacoes'
 import Categorias from './pages/Categorias'
 import Perfil from './pages/Perfil'
-// import LeitorNotas from './pages/LeitorNotas' // Temporariamente desabilitado
+import LeitorNotas from './pages/LeitorNotas'
 import Metas from './pages/Metas'
 import Bancos from './pages/Bancos'
 import GastosRecorrentes from './pages/GastosRecorrentes'
+import Investimentos from './pages/Investimentos'
 import Layout from './components/Layout'
 
 function PrivateRoute({ children }) {
@@ -48,10 +49,11 @@ function AppRoutes() {
         <Route path="transacoes" element={<Transacoes />} />
         <Route path="categorias" element={<Categorias />} />
         <Route path="perfil" element={<Perfil />} />
-        {/* <Route path="leitor" element={<LeitorNotas />} /> Temporariamente desabilitado */}
+        <Route path="leitor" element={<LeitorNotas />} />
         <Route path="metas" element={<Metas />} />
         <Route path="bancos" element={<Bancos />} />
         <Route path="gastos-recorrentes" element={<GastosRecorrentes />} />
+        <Route path="investimentos" element={<Investimentos />} />
       </Route>
     </Routes>
   )

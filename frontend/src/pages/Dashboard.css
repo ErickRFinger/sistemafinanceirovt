@@ -37,6 +37,68 @@
   margin-bottom: 2rem;
 }
 
+.total-guardado-card {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.total-guardado-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.total-guardado-icon {
+  font-size: 2.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.75rem;
+  border-radius: 1rem;
+}
+
+.total-guardado-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.total-guardado-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.total-guardado-valor {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 768px) {
+  .total-guardado-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 1.5rem;
+  }
+
+  .total-guardado-valor {
+    font-size: 2rem;
+    align-self: flex-start;
+  }
+}
+
+
 .ganho-fixo-header {
   display: flex;
   justify-content: space-between;

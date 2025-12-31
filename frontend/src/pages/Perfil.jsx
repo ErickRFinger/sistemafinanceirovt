@@ -38,9 +38,9 @@ export default function Perfil() {
       setMessage({ type: 'success', text: 'Ganho fixo atualizado com sucesso!' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.error || 'Erro ao atualizar ganho fixo' 
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.error || 'Erro ao atualizar ganho fixo'
       })
     } finally {
       setSaving(false)
@@ -60,9 +60,9 @@ export default function Perfil() {
       setMessage({ type: 'success', text: 'Nome atualizado com sucesso!' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.error || 'Erro ao atualizar nome' 
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.error || 'Erro ao atualizar nome'
       })
     } finally {
       setSaving(false)
@@ -81,31 +81,41 @@ export default function Perfil() {
   }
 
   return (
-    <div className="container">
-      <div className="perfil-header">
-        <h2>👤 Perfil</h2>
-        <p className="perfil-subtitle">Gerencie suas informações pessoais e ganho fixo</p>
-      </div>
-
+    <div className="container perfil-container">
       {message.text && (
-        <div className={message.type === 'success' ? 'success' : 'error'}>
+        <div className={`message-banner ${message.type === 'success' ? 'success' : 'error'}`} style={{ marginBottom: '1rem', padding: '1rem', borderRadius: '0.5rem', background: message.type === 'success' ? '#dcfce7' : '#fee2e2', color: message.type === 'success' ? '#166534' : '#991b1b' }}>
           {message.text}
         </div>
       )}
 
-      <div className="grid grid-2">
-        {/* Ganho Fixo Mensal */}
-        <div className="card">
-          <div className="card-icon">💰</div>
-          <h3>Ganho Fixo Mensal</h3>
-          <p className="card-description">
-            Configure seu ganho fixo mensal (salário) para ter uma melhor visão das suas finanças.
-            Este valor será usado para cálculos e projeções no dashboard.
-          </p>
-          
+      {/* Header com Avatar */}
+      <div className="perfil-header-section">
+        <div className="perfil-header-bg"></div>
+        <div className="perfil-avatar-wrapper">
+          <div className="perfil-avatar">
+            {perfil.nome ? perfil.nome.charAt(0).toUpperCase() : '👤'}
+          </div>
+        </div>
+        <div className="perfil-info">
+          <h2 className="perfil-name">{perfil.nome || 'Usuário'}</h2>
+          <p className="perfil-email">{perfil.email || user?.email}</p>
+        </div>
+      </div>
+
+      <div className="config-grid">
+        {/* Ganho Fixo */}
+        <div className="config-card">
+          <div className="config-header">
+            <div className="config-icon">💰</div>
+            <div>
+              <h3>Renda Mensal Fixa</h3>
+              <p className="form-hint" style={{ margin: 0 }}>Base para cálculos de orçamento</p>
+            </div>
+          </div>
+
           <form onSubmit={handleGanhoFixo}>
             <div className="form-group">
-              <label htmlFor="ganho_fixo">Valor Mensal</label>
+              <label htmlFor="ganho_fixo">Valor Mensal (R$)</label>
               <input
                 type="number"
                 id="ganho_fixo"
@@ -116,51 +126,52 @@ export default function Perfil() {
                 placeholder="0.00"
               />
               {perfil.ganho_fixo_mensal > 0 && (
-                <p className="form-hint">
-                  Valor configurado: <strong>{formatarMoeda(perfil.ganho_fixo_mensal)}</strong>
+                <p className="form-hint" style={{ color: 'var(--success)', fontWeight: '500' }}>
+                  Ativo: {formatarMoeda(perfil.ganho_fixo_mensal)}
                 </p>
               )}
             </div>
-            <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Salvando...' : 'Salvar Ganho Fixo'}
+            <button type="submit" className="btn-save" disabled={saving}>
+              {saving ? 'Salvando...' : 'Atualizar Renda'}
             </button>
           </form>
         </div>
 
-        {/* Informações Pessoais */}
-        <div className="card">
-          <div className="card-icon">👤</div>
-          <h3>Informações Pessoais</h3>
-          <p className="card-description">
-            Atualize suas informações pessoais. Seu email não pode ser alterado.
-          </p>
-          
+        {/* Dados Pessoais */}
+        <div className="config-card">
+          <div className="config-header">
+            <div className="config-icon">👤</div>
+            <div>
+              <h3>Dados da Conta</h3>
+              <p className="form-hint" style={{ margin: 0 }}>Identificação no sistema</p>
+            </div>
+          </div>
+
           <form onSubmit={handleNome}>
             <div className="form-group">
-              <label htmlFor="nome">Nome</label>
+              <label htmlFor="nome">Nome de Exibição</label>
               <input
                 type="text"
                 id="nome"
                 value={perfil.nome || ''}
                 onChange={(e) => setPerfil({ ...perfil, nome: e.target.value })}
-                placeholder="Seu nome"
+                placeholder="Como você quer ser chamado?"
                 required
                 minLength={2}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
+            <div className="form-group" style={{ marginTop: '1rem' }}>
+              <label htmlFor="email">Email de Acesso</label>
               <input
                 type="email"
                 id="email"
-                value={perfil.email || ''}
+                value={perfil.email || user?.email || ''}
                 disabled
                 className="input-disabled"
               />
-              <p className="form-hint">O email não pode ser alterado</p>
             </div>
-            <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Salvando...' : 'Salvar Nome'}
+            <button type="submit" className="btn-save" disabled={saving}>
+              {saving ? 'Salvando...' : 'Salvar Alterações'}
             </button>
           </form>
         </div>
@@ -168,16 +179,16 @@ export default function Perfil() {
 
       {/* Dicas */}
       <div className="card tips-card">
-        <h3>💡 Dicas</h3>
+        <h3>💡 Dicas do Sistema</h3>
         <ul className="tips-list">
           <li>
-            <strong>Ganho Fixo:</strong> Configure seu salário ou renda fixa mensal para ter projeções mais precisas.
+            <strong>Ganho Fixo:</strong> Definir sua renda mensal ajuda o sistema a calcular quanto sobra do seu dinheiro.
           </li>
           <li>
-            <strong>Receitas Adicionais:</strong> Você pode adicionar outras receitas além do ganho fixo nas transações.
+            <strong>Metas:</strong> Use o menu "Metas" para definir objetivos de economia (Carro, Casa, Viagem).
           </li>
           <li>
-            <strong>Controle:</strong> O sistema calcula automaticamente quanto você está gastando em relação ao seu ganho fixo.
+            <strong>Segurança:</strong> Nunca compartilhe sua senha. O suporte nunca pedirá sua senha.
           </li>
         </ul>
       </div>

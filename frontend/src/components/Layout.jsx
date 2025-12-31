@@ -86,6 +86,13 @@ export default function Layout() {
               🔄 Recorrentes
             </Link>
             <Link
+              to="/investimentos"
+              className={isActive('/investimentos') ? 'nav-link active' : 'nav-link'}
+              onClick={closeMenu}
+            >
+              📈 Investimentos
+            </Link>
+            <Link
               to="/leitor"
               className={isActive('/leitor') ? 'nav-link active special-link' : 'nav-link special-link'}
               onClick={closeMenu}
